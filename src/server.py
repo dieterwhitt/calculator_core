@@ -17,7 +17,7 @@ ADDR = (SERVER, PORT)
 HEADER = 8
 FORMAT = 'utf-8'
 #disconnect message to indicate disconnections
-DISCONNECT_MESSAGE = '!disconnect'
+DISCONNECT_MESSAGE = '!d'
 
 # make new socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

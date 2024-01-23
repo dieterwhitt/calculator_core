@@ -10,8 +10,8 @@ HEADER = 8
 PORT = 9999
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!disconnect'
-# figure this out later
-SERVER = '10.32.120.165'
+# no static ip: add the ip manually
+SERVER = ''
 ADDR = (SERVER, PORT)
 
 # set up client socket

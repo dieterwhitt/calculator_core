@@ -17,7 +17,7 @@ PORT = 9999
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!d'
 # no static ip: add the ip manually
-SERVER = '10.32.41.190'
+SERVER = ''
 ADDR = (SERVER, PORT)
 
 # set up client socket

@@ -51,7 +51,7 @@ def listen():
     listener.start()
     print('[LISTENING] client is listening for input')
     #getting input
-    input()
+    #input()
 
 # main execution
 if __name__ == '__main__':

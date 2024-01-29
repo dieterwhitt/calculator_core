@@ -10,7 +10,8 @@ import threading
 
 # server port
 PORT = 9999
-# gets my ip address
+# gets server ip address
+# realistically this would be a static ip
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message

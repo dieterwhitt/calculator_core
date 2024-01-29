@@ -17,7 +17,8 @@ PORT = 9999
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!d'
 # no static ip: add the ip manually
-SERVER = ''
+# server's ip address
+SERVER = '10.32.153.179'
 ADDR = (SERVER, PORT)
 
 # set up client socket
@@ -51,7 +52,7 @@ def listen():
     listener.start()
     print('[LISTENING] client is listening for input')
     #getting input
-    #input()
+    input()
 
 # main execution
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ by Dieter Whittingham
 
 ## Purpose
 calculator_core is part I of a series of ethical cybersecurity experiments.\
-The goal of this project is to learn more about cybersecurity by exploring different types of software firsthand.
+The goal of this project is to learn more about cybersecurity by exploring the capabilities of software firsthand.
 
 ## Contact Me:
 discord: dieterw_\

@@ -7,12 +7,13 @@ socket server
 
 import socket
 import threading
+from datetime import datetime
 
 # server port
 PORT = 9999
-# gets server ip address
+# sets server ip address to my public ip address
 # realistically this would be a static ip
-SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = '10.32.153.179'
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message
 HEADER = 8
@@ -25,9 +26,9 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 # handling individual communication between client and server
-def handle_client(conn, addr):
-    print(f'new connection: {addr} connected.')
-
+def handle_client(conn, clientaddr):
+    connectTime = datetime.now()
+    print(f'[NEW CONNECTION]: {clientaddr} connected at {connectTime.strftime("%d/%m/%Y %H:%M:%S")}.')
     connected = True
     while connected:
         # blocking line: this line won't be passed until a message is received
@@ -45,7 +46,19 @@ def handle_client(conn, addr):
             if msg == DISCONNECT_MESSAGE:
                 # stop while loop
                 connected = False
-            print(f'[{addr}]: {msg}')
+            # print message with current date and time
+            try:
+                now = datetime.now()
+                print(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} from {clientaddr}: {msg}]')
+                # write message to file
+                '''
+                filepath = f'~/logs/{clientaddr[0]}.txt'
+                print('attempting to log to ' + filepath)
+                with open(filepath, 'a+') as logfile:
+                    logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} from {clientaddr}: {msg}]')
+                    '''
+            except Exception as e:
+                print(f'[ERROR] couldn\'t log user input: {e}')
     # while loop ended: close connection
     conn.close()
 
@@ -58,14 +71,13 @@ def start():
         # waiting for server connections
         # conn is the socket object that allows us to send information back to the client
         # addr is the ip address and port that connected
-        conn, addr = server.accept()
+        conn, clientaddr = server.accept()
         # new connection: pass the connection to handle_client in a new thread
         # this thread will run parallel with the server waiting for connections
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread = threading.Thread(target=handle_client, args=(conn, clientaddr))
         thread.start()
         # print number of connections
-        print(f'active connections: {threading.activeCount() - 1}')
-
+        print(f'active connections: {threading.active_count() - 1}')
 
 print(f'[STARTING] starting server')
 start()

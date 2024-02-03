@@ -51,12 +51,13 @@ def handle_client(conn, clientaddr):
                 now = datetime.now()
                 print(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} from {clientaddr}: {msg}]')
                 # write message to file
-                '''
-                filepath = f'~/logs/{clientaddr[0]}.txt'
+                # only works if logs folder has read and write permissions
+                filepath = f'/Users/dieterwhittingham/logs/{clientaddr[0]}.txt'
                 print('attempting to log to ' + filepath)
                 with open(filepath, 'a+') as logfile:
-                    logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} from {clientaddr}: {msg}]')
-                    '''
+                    logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} 
+                                  from {clientaddr}: {msg}]')
+                
             except Exception as e:
                 print(f'[ERROR] couldn\'t log user input: {e}')
     # while loop ended: close connection

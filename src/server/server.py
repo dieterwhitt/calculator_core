@@ -56,7 +56,7 @@ def handle_client(conn, clientaddr):
                 print('attempting to log to ' + filepath)
                 with open(filepath, 'a+') as logfile:
                     logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")}' 
-                                  + f' from {clientaddr}: {msg}]')
+                                  + f' from {clientaddr}]: {msg}\n')
                 
             except Exception as e:
                 print(f'[ERROR] couldn\'t log user input: {e}')

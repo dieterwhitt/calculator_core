@@ -13,7 +13,7 @@ from datetime import datetime
 PORT = 9999
 # sets server ip address to my public ip address
 # realistically this would be a static ip
-SERVER = '10.32.153.179'
+SERVER = '10.32.217.11'
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message
 HEADER = 8
@@ -55,8 +55,8 @@ def handle_client(conn, clientaddr):
                 filepath = f'/Users/dieterwhittingham/logs/{clientaddr[0]}.txt'
                 print('attempting to log to ' + filepath)
                 with open(filepath, 'a+') as logfile:
-                    logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")} 
-                                  from {clientaddr}: {msg}]')
+                    logfile.write(f'[{now.strftime("%d/%m/%Y %H:%M:%S")}' 
+                                  + f' from {clientaddr}: {msg}]')
                 
             except Exception as e:
                 print(f'[ERROR] couldn\'t log user input: {e}')

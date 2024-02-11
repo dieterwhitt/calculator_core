@@ -18,7 +18,7 @@ FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!d'
 # no static ip: add the ip manually
 # server's ip address
-SERVER = '10.32.217.11'
+SERVER = ''
 ADDR = (SERVER, PORT)
 
 # set up client socket
@@ -60,4 +60,3 @@ if __name__ == '__main__':
     if sys.platform == 'win32':
         os.Startfile('C:\WINDOWS\system32\calc.exe')
     listen()
-

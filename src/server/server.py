@@ -13,7 +13,7 @@ from datetime import datetime
 PORT = 9999
 # sets server ip address to my public ip address
 # realistically this would be a static ip
-SERVER = '10.32.217.11'
+SERVER = ''
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message
 HEADER = 8

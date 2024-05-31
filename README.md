@@ -1,5 +1,5 @@
 # calculator_core
-by Dieter Whittingham
+by dieter whittingham
 
 ## purpose
 part I.

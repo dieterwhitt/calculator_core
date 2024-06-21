@@ -19,26 +19,33 @@ load_dotenv()
 
 # sets server ip address to my public ip address
 # realistically this would be a static ip
-SERVER = os.getenv('SERVER')
-PORT = int(os.getenv('PORT'))
+SERVER = "192.168.2.16" #os.getenv("SERVER")
+PORT = int(os.getenv("PORT"))
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message
 HEADER = 8
-FORMAT = 'utf-8'
+FORMAT = "utf-8"
 # disconnect message to indicate disconnections
-DISCONNECT_MESSAGE = '!d'
-NAME_HEADER = '@@@'
+DISCONNECT_MESSAGE = "!d"
+NAME_HEADER = "@@@"
+
+HOME = os.path.expanduser("~")
 
 # make new socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-# makes a directory if it doesn't exist yet, and gives owner permissions
+# makes a directory if it doesn"t exist yet, and gives owner permissions
 def make_directory(path):
     if not os.path.exists(path):
-        os.makedirs(path)
-        # give the server rwx permissions
-        os.chmod(path, stat.S_IRWXO)
+        try:
+            print(f"attempting to make new directory {path}")
+            # automatically given full permissions
+            os.mkdir(path)
+        except Exception as e:
+            print(f"error creating {path}: {e}")
+    else:
+        print(f"{path} already exists")
 
 # getting the user of whoever sent a message.
 # all messages have the format name@@@message
@@ -62,8 +69,9 @@ def log_message(msg, ip):
         if not name:
             name = "unknown user"
         now = datetime.now()
-        list_log = f'{name} at {now.strftime("%d/%m/%Y %H:%M:%S")} from 
-                {ip}: {msg_content}'
+        list_log = f"{name} at {now.strftime("%d/%m/%Y %H:%M:%S")} from \
+                {ip}: {msg_content}"
+        raw_log = msg_content.replace("'", "") # fully raw no apostrophes
         print(list_log)
         # write message to file
         # only works if logs folder has read and write permissions
@@ -74,31 +82,33 @@ def log_message(msg, ip):
         # creating directory for this user
         if data["name"]: 
             # name was found: use the name
-            dirpath = f"/logs/{name}"
+            dirpath = name
         else:
-            # name wasn't found, use ip address
-            dirpath = f"/logs/{ip}"
+            # name wasn"t found, use ip address
+            dirpath = ip
+        fullpath = os.path.join(HOME, "logs", dirpath)
+        make_directory(fullpath)
 
         # logging to list file
-        with open(dirpath + "/list.txt", 'a+') as loglist:
+        with open(os.path.join(fullpath, "list.txt"), "a+") as loglist:
             loglist.write(list_log)
         
-        with open(dirpath + "/raw.txt", "a+") as lograw:
-            lograw.write(msg_content)
+        with open(os.path.join(fullpath, "raw.txt"), "a+") as lograw:
+            lograw.write()
 
     except Exception as e:
-        print(f'[ERROR] couldn\'t log user input: {e}')
+        print(f"[ERROR] couldn\'t log user input: {e}")
 
 # handling individual communication between client and server
 def handle_client(conn, clientaddr):
     connectTime = datetime.now()
-    print(f'[NEW CONNECTION]: {clientaddr} connected at {connectTime.strftime("%d/%m/%Y %H:%M:%S")}.')
+    print(f"[NEW CONNECTION]: {clientaddr} connected at {connectTime.strftime("%d/%m/%Y %H:%M:%S")}.")
     connected = True
     while connected:
-        # blocking line: this line won't be passed until a message is received
-        # this is why it's necessary to run threads so that we can handle multiple
+        # blocking line: this line won"t be passed until a message is received
+        # this is why it"s necessary to run threads so that we can handle multiple
         # processes at once
-        # here we're taking the first message which will be the header
+        # here we"re taking the first message which will be the header
         # containing the length of the next message
         msg_length = conn.recv(HEADER).decode(FORMAT)
         # ensure that the message has some content, since upon connection a "blank" message is sent
@@ -110,6 +120,7 @@ def handle_client(conn, clientaddr):
             if msg == DISCONNECT_MESSAGE:
                 # stop while loop
                 connected = False
+
             log_message(msg, clientaddr[0])
             
     # while loop ended: close connection
@@ -119,7 +130,7 @@ def handle_client(conn, clientaddr):
 # handling new connections
 def start():
     server.listen()
-    print(f'[LISTENING] server is listening on {SERVER}')
+    print(f"[LISTENING] server is listening on {SERVER}")
     while True:
         # waiting for server connections
         # conn is the socket object that allows us to send information back to the client
@@ -130,10 +141,10 @@ def start():
         thread = threading.Thread(target=handle_client, args=(conn, clientaddr))
         thread.start()
         # print number of connections
-        print(f'active connections: {threading.active_count() - 1}')
+        print(f"active connections: {threading.active_count() - 1}")
 
 if __name__ == "__main__":
-    print(f'[STARTING] starting server')
-    # create logs folder if doesn't exist yet
-    make_directory("logs")
+    print(f"[STARTING] starting server")
+    # create logs folder if doesn"t exist yet
+    make_directory(os.path.join(HOME, "logs"))
     start()

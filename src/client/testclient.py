@@ -8,10 +8,10 @@ import socket
 
 HEADER = 8
 PORT = 9999
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = '!disconnect'
+FORMAT = "utf-8"
+DISCONNECT_MESSAGE = "!disconnect"
 # no static ip: add the ip manually
-SERVER = ''
+SERVER = ""
 ADDR = (SERVER, PORT)
 
 # set up client socket
@@ -30,7 +30,7 @@ def send(msg_str):
     # need to ensure send_length is 8 bytes long
     # therefore we need to add empty space
     # adding byte representations of spaces
-    send_length += b' ' * (HEADER - len(send_length))
+    send_length += b" " * (HEADER - len(send_length))
     # test to see what the header looks like
     # send header
     client.send(send_length)
@@ -38,12 +38,12 @@ def send(msg_str):
     client.send(message)
 
 # testing
-send('hello world!')
+send("hello world!")
 connected = True
 while connected:
-    x = input('enter a message: ')
+    x = input("enter a message: ")
     send(x)
     if(x == DISCONNECT_MESSAGE):
         connected = False
-        print('you have been disconnected.')
+        print("you have been disconnected.")
         

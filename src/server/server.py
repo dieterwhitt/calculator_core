@@ -5,8 +5,6 @@ server.py
 socket server
 '''
 
-
-
 import socket
 import threading
 from datetime import datetime
@@ -19,7 +17,7 @@ load_dotenv()
 
 # sets server ip address to my public ip address
 # realistically this would be a static ip
-SERVER = "192.168.2.16" #os.getenv("SERVER")
+SERVER = os.getenv("SERVER")
 PORT = int(os.getenv("PORT"))
 ADDR = (SERVER, PORT)
 # 8 byte header - tells us the length of the upcoming message

@@ -20,7 +20,7 @@ HEADER = 8
 FORMAT = "utf-8"
 DISCONNECT_MESSAGE = "!d"
 # server"s ip address
-SERVER = "192.168.2.16"#os.getenv("SERVER")
+SERVER = os.getenv("SERVER")
 PORT = int(os.getenv("PORT"))
 ADDR = (SERVER, PORT)
 NAME_HEADER = "@@@"

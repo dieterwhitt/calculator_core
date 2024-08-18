@@ -67,8 +67,7 @@ def log_message(msg, ip):
         if not name:
             name = "unknown user"
         now = datetime.now()
-        list_log = f"{name} at {now.strftime("%d/%m/%Y %H:%M:%S")} from \
-                {ip}: {msg_content}"
+        list_log = f"{name} at {now.strftime("%d/%m/%Y %H:%M:%S")} from {ip}: {msg_content}\n"
         raw_log = msg_content.replace("'", "") # fully raw no apostrophes
         print(list_log)
         # write message to file
@@ -92,7 +91,7 @@ def log_message(msg, ip):
             loglist.write(list_log)
         
         with open(os.path.join(fullpath, "raw.txt"), "a+") as lograw:
-            lograw.write()
+            lograw.write(raw_log)
 
     except Exception as e:
         print(f"[ERROR] couldn\'t log user input: {e}")
